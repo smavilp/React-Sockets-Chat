@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../auth/AuthContext";
 
 const LoginPage = () => {
+  const { login } = useContext(AuthContext);
+
   const [form, setForm] = useState({
-    email: "123",
-    password: "456",
+    email: "",
+    password: "",
     rememberme: true
   });
 
@@ -23,7 +26,7 @@ const LoginPage = () => {
     });
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     form.rememberme
@@ -31,6 +34,11 @@ const LoginPage = () => {
       : localStorage.removeItem("email");
 
     const { email, password } = form;
+    const ok = await login(email, password);
+  };
+
+  const todoOK = () => {
+    return form.email.length > 0 && form.password.length > 0 ? true : false;
   };
 
   useEffect(() => {
@@ -96,7 +104,13 @@ const LoginPage = () => {
       </div>
 
       <div className="container-login100-form-btn m-t-17">
-        <button className="login100-form-btn">Ingresar</button>
+        <button
+          type="submit"
+          className="login100-form-btn"
+          disabled={!todoOK()}
+        >
+          Ingresar
+        </button>
       </div>
     </form>
   );
