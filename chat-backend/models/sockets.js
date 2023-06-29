@@ -1,6 +1,7 @@
 const {
   usuarioConectado,
-  usuarioDesconectado
+  usuarioDesconectado,
+  getUsuarios
 } = require("../controllers/sockets");
 const { comprobarJWT } = require("../helpers/jwt");
 
@@ -21,7 +22,11 @@ class Sockets {
       }
       await usuarioConectado(uid);
 
-      socket.on("disconnect", async (uid) => {
+      this.io.emit("lista-usuarios", await getUsuarios())
+
+
+      socket.on("disconnect", async () => {
+
         await usuarioDesconectado(uid);
       });
     });

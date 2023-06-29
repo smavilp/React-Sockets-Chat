@@ -7,24 +7,28 @@ import AuthLayout from "./layout/AuthLayout";
 import { AuthProvider } from "./auth/AuthContext";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import { SocketProvider } from "./context/SocketContext";
+import { ChatProvider } from "./context/chat/ChatContext";
+
 
 const App = () => {
   return (
-    <AuthProvider>
-      <SocketProvider>
-        <HashRouter>
-          <Routes>
-            <Route element={<AuthLayout />}>
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-            </Route>
-            <Route element={<ProtectedRoutes />}>
-              <Route path="/" element={<ChatPage />} />
-            </Route>
-          </Routes>
-        </HashRouter>
-      </SocketProvider>
-    </AuthProvider>
+    <ChatProvider>
+      <AuthProvider>
+        <SocketProvider>
+          <HashRouter>
+            <Routes>
+              <Route element={<AuthLayout />}>
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+              </Route>
+              <Route element={<ProtectedRoutes />}>
+                <Route path="/" element={<ChatPage />} />
+              </Route>
+            </Routes>
+          </HashRouter>
+        </SocketProvider>
+      </AuthProvider>
+    </ChatProvider>
   );
 };
 
